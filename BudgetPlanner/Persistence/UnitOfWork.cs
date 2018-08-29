@@ -16,14 +16,19 @@ namespace BudgetPlanner.Persistence
         private readonly BudgetDbContext _context;
         private readonly UserManager<User> _userManager;
 
-        public UnitOfWork(BudgetDbContext context, UserManager<User> userManager)
+        public UnitOfWork(BudgetDbContext context, 
+            UserManager<User> userManager,
+            ISubscriptionRepository subscriptionRepository,
+            ITransactionRepository transactionRepository,
+            ICompanyRepository companyRepository,
+            IUserRepository userRepository)
         {
             _context = context;
             _userManager = userManager;
-            Subscriptions = new SubscriptionRepository(_context, _userManager);
-            Transactions = new TransactionRepository(_context, _userManager);
-            Companies = new CompanyRepository(_context, _userManager);
-            Users = new UserRepository(_context, _userManager);
+            Subscriptions = subscriptionRepository;
+            Transactions = transactionRepository;
+            Companies = companyRepository;
+            Users = userRepository;
         }
 
         public ISubscriptionRepository Subscriptions { get; private set; }

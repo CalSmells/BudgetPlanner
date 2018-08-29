@@ -57,7 +57,10 @@ namespace BudgetPlanner
 
             var builder = new ContainerBuilder();
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
-
+            builder.RegisterType<SubscriptionRepository>().As<ISubscriptionRepository>();
+            builder.RegisterType<TransactionRepository>().As<ITransactionRepository>();
+            builder.RegisterType<CompanyRepository>().As<ICompanyRepository>();
+            builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.Populate(services);
             var container = builder.Build();
 
