@@ -1,0 +1,119 @@
+﻿@model BudgetPlanner.Models.Company
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .sub-pill {
+        width: 300px;
+    }
+
+    .dropdown-payment {
+        background-color: #303030
+    }
+    .no-padding{
+        padding-bottom:0;
+        padding-top:0;
+    }
+    #balance{
+        visibility:hidden;
+    }
+</style>
+
+<h2>@Model.CompanyName</h2>
+
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.CompanyId">Edit</a> |
+    <a asp-action="Delete" asp-route-id="@Model.CompanyId">Delete</a> |
+    <a asp-action="Index">Back</a>
+</div>
+
+
+<partial name="_IndexPartial" />
+<div class="container">
+    <h4>Subscriptions</h4>
+    <table>
+        <thead class="list-group list-inline" href="#subsList" data-toggle="collapse">
+            <tr class="list-group-item" style="background-color:#375a7f;border-color:#375a7f;">
+                <th class="sub-pill">
+                    Name
+                </th>
+                <th class="sub-pill">
+                    Next Due
+                </th>
+                <th class="sub-pill">
+                    Amount
+                </th>
+                <th class="sub-pill"></th>
+            </tr>
+        </thead>
+        <tbody class="list-group table collapse in" id="subsList">
+            @for (int i = (Model.Subscriptions.Count - 1); i > -1; i--)
+            {
+                <tr class="list-group-item">
+                    <td class="sub-pill">
+                        @Html.DisplayFor(modelItem => Model.Subscriptions[i].SubscriptionName)
+                    </td>
+                    <td class="sub-pill">
+                        @Model.Subscriptions[i].NextDue.ToString("dd/MM/yyyy")
+                    </td>
+                    <td class="sub-pill">
+                        £@Html.DisplayFor(modelItem => Model.Subscriptions[i].Amount)
+                    </td>
+                    <td class="sub-pill">
+                        <a asp-controller="Transaction" asp-action="Edit" asp-route-id="@Model.Transactions[i].TransId">Edit</a> |
+                        <a asp-controller="Transaction" asp-action="Details" asp-route-id="@Model.Transactions[i].TransId">Details</a> |
+                        <a asp-controller="Transaction" asp-action="Delete" asp-route-id="@Model.Transactions[i].TransId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<br />
+<br />
+<br />
+<br />
+<div class="container">
+    <h3>Transactions</h3>
+    <table>
+        <thead class="list-group list-inline" href="#transList" data-toggle="collapse">
+            <tr class="list-group-item" style="background-color:#375a7f;border-color:#375a7f;">
+                <th class="sub-pill">
+                    Name
+                </th>
+                <th class="sub-pill">
+                    Date
+                </th>
+                <th class="sub-pill">
+                    Amount
+                </th>
+            </tr>
+        </thead>
+        <tbody class="list-group table collapse in" id="transList">
+            @for (int i = (Model.Transactions.Count - 1); i >= 0; i--)
+            {
+                <tr class="list-group-item">
+                    <td class="sub-pill">
+                        @Html.DisplayFor(modelItem => Model.Transactions[i].TransactionName)
+                    </td>
+                    <td class="sub-pill">
+                        @Html.DisplayFor(modelItem => Model.Transactions[i].DateTime)
+                    </td>
+                    <td class="sub-pill">
+                        @{decimal amount = (Model.Transactions[i].Amount) * -1;}
+                        £@amount
+                    </td>
+                    <td class="sub-pill">
+                        <a asp-controller="Transaction" asp-action="Edit" asp-route-id="@Model.Transactions[i].TransId">Edit</a> |
+                        <a asp-controller="Transaction" asp-action="Details" asp-route-id="@Model.Transactions[i].TransId">Details</a> |
+                        <a asp-controller="Transaction" asp-action="Delete" asp-route-id="@Model.Transactions[i].TransId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

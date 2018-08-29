@@ -1,0 +1,37 @@
+﻿<div class="container">
+    <br />
+    <br />
+    <ul class="list-group list-inline">
+        <li>
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    New Payment
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a asp-controller="Transaction" asp-action="Create" asp-route-subId="0" asp-route-deposit="true" role="button" class="btn dropdown-payment">Deposit</a>
+                    <a asp-controller="Transaction" asp-action="Create" asp-route-subId="0" asp-route-deposit="false" role="button" class="btn dropdown-payment">Withdrawal</a>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    New Subscription
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a asp-controller="Subscription" asp-route-deposit="true" asp-action="Create" role="button" class="btn dropdown-payment">Deposit</a>
+                    <a asp-controller="Subscription" asp-route-deposit="false" asp-action="Create" role="button" class="btn dropdown-payment">Withdrawal</a>
+                </div>
+            </div>
+        </li>
+        <li><a asp-controller="Company" asp-action="Create" role="button" class="btn btn-primary">New Company</a></li>
+        <li>
+            @{string search = "";}
+            <form class="form-group" method="get">
+                <input type="text" class="form-control col-sm-2" style="width:150px;" asp-for="@(search)" />
+                <input type="submit" asp-action="IndexSearch" asp-route-search="@(search)" class="form-control btn btn-primary" style="width:100px;" value="Search" />
+            </form>
+        </li>
+        <li class="pull-right" id="balance"><h3>Balance: @ViewData["balance"]</h3></li>
+    </ul>
+</div>

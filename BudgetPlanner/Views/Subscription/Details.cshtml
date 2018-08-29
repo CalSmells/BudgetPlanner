@@ -1,0 +1,144 @@
+﻿@model BudgetPlanner.Models.Subscription
+
+@{
+    ViewData["Title"] = Model.SubscriptionName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .sub-pill {
+        width: 300px;
+    }
+
+    ul {
+        list-style: none;
+    }
+</style>
+
+<h2 class="container">@ViewData["Title"]</h2>
+
+
+
+<div class="container">
+    <hr />
+    <div class="well well-lg">
+        <h4 style="text-align:center;">
+            £@Model.Progress / £@Model.Target.Value
+        </h4>
+        <div class="progress" style="height:20px;background-color:#375a7f;">
+            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="@(ViewData["progress"])"
+                 aria-valuemin="0" aria-valuemax="@(Model.Target)" style="width:@(ViewData["progress"])%;">
+            </div>
+        </div>
+        <div class="text-center">
+            <h5>Next Payment Due: @Model.NextDue.ToString("dd/MM/yyyy")</h5>
+            <ul class="btn-group list-inline">
+                <li>
+                    <a asp-action="Update" asp-route-id="@Model.SubscriptionId" class="btn btn-primary" role="button">Pay</a>
+                </li>
+                <li>
+                    <a asp-action="Index" class="btn btn-primary" role="button">Back</a>
+                </li>
+                <li>
+                    <a asp-action="Edit" asp-route-id="@Model.SubscriptionId" class="btn btn-primary" role="button">Edit</a>
+                </li>
+                <li>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <h3>Transactions</h3>
+    <table class="table">
+        <thead class="list-group list-inline">
+            <tr class="list-group-item" style="background-color:#375a7f;border-color:#375a7f;">
+                <th class="sub-pill">
+                    Name
+                </th>
+                <th class="sub-pill">
+                    Date
+                </th>
+                <th class="sub-pill">
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
+                <th class="sub-pill">
+                    @Html.DisplayNameFor(model => model.Company)
+                </th>
+            </tr>
+        </thead>
+        <tbody class="list-group">
+            @for (int i = (Model.Transactions.Count - 1); i > -1; i--)
+            {
+                <tr class="list-group-item">
+                    <td class="sub-pill">
+                        @Html.DisplayFor(modelItem => Model.Transactions[i].TransactionName)
+                    </td>
+                    <td class="sub-pill">
+                        @Html.DisplayFor(modelItem => Model.Transactions[i].DateTime)
+                    </td>
+                    <td class="sub-pill">
+                        £@Html.DisplayFor(modelItem => Model.Transactions[i].Amount)
+                    </td>
+                    <td class="sub-pill">
+                        @Html.DisplayFor(model => Model.Company.CompanyName)
+                    </td>
+                    <td class="sub-pill">
+                        <a asp-controller="Transaction" asp-action="Edit" asp-route-id="@Model.Transactions[i].TransId">Edit</a> |
+                        <a asp-controller="Transaction" asp-action="Details" asp-route-id="@Model.Transactions[i].TransId">Details</a> |
+                        <a asp-controller="Transaction" asp-action="Delete" asp-route-id="@Model.Transactions[i].TransId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center" id="exampleModalLabel">Are you sure?</h3>
+            </div>
+            <div class="modal-body">
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Amount)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Amount)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Progress)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Progress)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Target)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Target)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Company)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Company.CompanyName)
+                    </dd>
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <form method="post">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="submit" asp-action="Delete" asp-route-id="@Model.SubscriptionId" class="btn btn-primary">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<partial name="_DueModal" />
+
+<script src="~/js/dueModal.js"></script>

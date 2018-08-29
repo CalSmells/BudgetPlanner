@@ -1,0 +1,42 @@
+﻿@model IEnumerable<BudgetPlanner.Models.Company>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .sub-pill {
+        width: 300px;
+    }
+</style>
+
+<h2>Companies</h2>
+
+<partial name="_IndexPartial" />
+<div class="container">
+    <table class="table">
+        <thead class="list-group list-inline">
+            <tr class="list-group-item" style="background-color:#375a7f;border-color:#375a7f;">
+                <th class="col-sm-3 sub-pill">
+                    @Html.DisplayNameFor(model => model.CompanyName)
+                </th>
+                <th class="col-sm-3"></th>
+            </tr>
+        </thead>
+        <tbody class="list-group">
+            @foreach (var item in Model)
+            {
+                <tr class="list-group-item">
+                    <td class="col-sm-2 sub-pill">
+                        @Html.DisplayFor(modelItem => item.CompanyName)
+                    </td>
+                    <td class="col-sm-2 sub-pill">
+                        <a asp-action="Details" asp-route-id="@item.CompanyId" class="btn btn-sm btn-primary" role="button">More</a>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,51 @@
+﻿@model BudgetPlanner.Models.TransCreate
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+<h4>Transaction</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TransName" class="control-label"></label>
+                <input asp-for="TransName" class="form-control" />
+                <span asp-validation-for="TransName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateTime" class="control-label"></label>
+                <input asp-for="DateTime" class="form-control" />
+                <span asp-validation-for="DateTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label form-inline" style="width:350px"></label>
+                <input asp-for="Amount" class="form-control" />
+                
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CompanyId" class="control-label">Company | <a asp-controller="Company" asp-action="Create">New Company</a></label>
+                <select asp-for="CompanyId" class="form-control" asp-items="@Model.CompanyIds"></select>
+            </div>
+            <input type="hidden" asp-for="InOut" />
+            <div class="form-group">
+                <input type="submit" asp-route-id="@Model" value="Create" class="btn btn-default" />
+            </div>
+            <input type="hidden" asp-for="SubId" />
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Return">Back</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

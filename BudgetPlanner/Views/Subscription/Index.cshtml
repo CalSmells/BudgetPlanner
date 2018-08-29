@@ -1,0 +1,75 @@
+﻿@model IEnumerable<BudgetPlanner.Models.Subscription>
+
+@{
+    ViewData["Title"] = "Susbcriptions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .sub-pill {
+        width: 200px;
+    }
+
+    .dropdown-payment {
+        background-color: #303030
+    }
+</style>
+
+<h2>My Subscriptions</h2>
+<partial name="_DueModal" />
+<partial name="_IndexPartial" />
+<div class="container">
+    <table class="table">
+        <thead class="list-group list-inline">
+            <tr class="list-group-item" style="background-color:#375a7f;border-color:#375a7f;">
+                <th class="sub-pill">
+                    @Html.DisplayNameFor(model => model.SubscriptionName)
+                </th>
+                <th class="sub-pill">
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
+                <th class="sub-pill">
+                    @Html.DisplayNameFor(model => model.Company)
+                </th>
+                <th class="sub-pill">
+                    @Html.DisplayNameFor(model => model.NextDue)
+                </th>
+                <th class="sub-pill" style="padding-bottom:0;padding-top:0;">
+                    <button type="submit" onclick="updateSubs();" class="btn btn-sm btn-default pull-right">Update</button>
+                </th>
+            </tr>
+        </thead>
+        <tbody class="list-group">
+            @foreach (var item in Model)
+            {
+                <tr class="list-group-item" style="">
+                    <td class="sub-pill">
+                        @Html.DisplayFor(modelItem => item.SubscriptionName)
+                    </td>
+                    <td class="sub-pill">
+                        £@Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td class="sub-pill">
+                        @Html.DisplayFor(modelItem => item.Company.CompanyName)
+                    </td>
+                    <td class="sub-pill">
+                        @item.NextDue.ToString("dd/MM/yyyy")
+                    </td>
+                    <td class="sub-pill">
+                        <a asp-action="Details" asp-route-id="@item.SubscriptionId" role="button"
+                           class="btn btn-primary btn-sm pull-right" style="padding-top:0;padding-bottom:0;" id="@item.SubscriptionId">
+                            @item.OverDue
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="~/js/subscriptionA.js"></script>
+<script src="~/js/dueModal.js"></script>
+
+<script>
+    const userId = '@ViewBag.UserId';
+</script>
